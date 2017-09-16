@@ -1,6 +1,6 @@
 import Expo from 'expo';
 import React, { Component } from 'react';
-import Main from './src';
+import Router from './src';
 
 export default class App extends Component {
   constructor(props) {
@@ -56,6 +56,6 @@ export default class App extends Component {
   render() {
     if (!this.state.appReady) {
       return <Expo.AppLoading />;
-    } return <Main />;
+    } return <Router />;
   }
 }

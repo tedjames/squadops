@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, WebView, ScrollView, TouchableOpacity, StatusBar } from 'react-native';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { LinearGradient, BlurView } from 'expo';
@@ -11,7 +11,12 @@ import EventCard from './eventCard';
 import ServerCard from './serverCard';
 import Shortcut from '../buttons/shortcut';
 
-export default class Home extends React.Component {
+export default class Home extends Component {
+  static navigationOptions = {
+    title: 'Home',
+    header: null
+  }
+
   render() {
     const images = {
       basrah: require('../../../assets/images/basrah.png'),
@@ -60,8 +65,8 @@ export default class Home extends React.Component {
           </Section>
 
           <Section title="SERVERS">
-            <ServerCard playerCount="78" map="SUMARI AAS" image={images.forest} />
-            <ServerCard playerCount="24" map="AL BASRAH AAS" image={images.basrah} intensity={90} />
+            <ServerCard playerCount="78" map="AL BASRAH INV" image={images.basrah} intensity={90} />
+            <ServerCard playerCount="24" map="SUMARI AAS" image={images.forest} />
             <ServerCard playerCount="01" map="NARVA AAS" image={images.lodgie} />
             <ServerCard playerCount="00" map="SUMARI AAS" image={images.forest} />
           </Section>

@@ -1,10 +1,15 @@
-import React from 'react';
-import Home from './components/home';
+import { StackNavigator } from 'react-navigation';
 
-export default class Main extends React.Component {
-  render() {
-    return (
-      <Home />
-    );
+import Home from './components/home';
+import Media from './components/media';
+
+const Router = StackNavigator({
+  Home: {
+    screen: Home,
+  },
+  Media: {
+    screen: Media,
   }
-}
+});
+
+export default Router;
