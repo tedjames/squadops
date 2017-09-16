@@ -10,7 +10,7 @@ export default class Shortcut extends Component {
         height: 67.5,
         width: 92.5,
         marginLeft: 10,
-        marginTop: 35,
+        marginTop: 20,
         borderRadius: 5,
         alignItems: 'center',
         backgroundColor: inverted ? "#F5F5F5" : "#3F44EA",

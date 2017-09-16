@@ -9,7 +9,7 @@ export default class EventCard extends Component {
 
     return (
       <TouchableOpacity activeOpacity={0.625} style={styles.card}>
-        <Image style={styles.cardImage} source={image || require('../../assets/images/default.png')}>
+        <Image style={styles.cardImage} source={image || require('../../../assets/images/default.png')}>
         { gradient ?
           <LinearGradient style={{ opacity: 0.9, height: '100%', width: '65%', left: 0, position: 'relative' }} colors={gradient} start={{x: 0.0, y: 0.25}} end={{x: 0.5, y: 1.0}}>
             <Text style={styles.cardName}>{name}</Text>

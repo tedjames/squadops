@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { View, Text, Image } from 'react-native';
 import { LinearGradient } from 'expo';
-import StatusIcon from './StatusIcon';
+import StatusIcon from '../icons/statusIcon';
 
-export default class UserInfo extends Component {
+export default class Profile extends Component {
   render() {
+    const { name, status, hours, ops, certs } = this.props;
     return (
       <View style={styles.userInfo}>
         <View style={styles.avatar}>
@@ -13,23 +14,23 @@ export default class UserInfo extends Component {
             style={{ flex: 1, height: 65, width: 65, borderRadius: 32.5 }}
           />
         </View>
-        <Text style={styles.username}>MIYAMOTO</Text>
+        <Text style={styles.name}>{name}</Text>
         <View style={styles.status}>
           <StatusIcon />
-          <Text style={styles.statusText}>Online</Text>
+          <Text style={styles.statusText}>{status}</Text>
         </View>
         <LinearGradient style={styles.divider} start={{x: 0.0, y: 0.25}} end={{x: 0.5, y: 1.0}} locations={[0.3, 1]} colors={['#ccd5da', '#fff']} />
         <View style={styles.statsBar}>
           <View style={styles.stat}>
-            <Text style={styles.statValue}>174</Text>
+            <Text style={styles.statValue}>{hours}</Text>
             <Text style={styles.statName}>Hours</Text>
           </View>
           <View style={styles.stat}>
-            <Text style={styles.statValue}>21</Text>
+            <Text style={styles.statValue}>{ops}</Text>
             <Text style={styles.statName}>Ops</Text>
           </View>
           <View style={styles.stat}>
-            <Text style={styles.statValue}>5</Text>
+            <Text style={styles.statValue}>{certs}</Text>
             <Text style={styles.statName}>Certifications</Text>
           </View>
         </View>
@@ -90,7 +91,7 @@ const styles = {
     marginLeft: 32.5,
     marginTop: 35
   },
-  username: {
+  name: {
     fontFamily: 'syncopate',
     fontSize: 26,
     letterSpacing: 1,

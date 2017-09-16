@@ -11,7 +11,7 @@ export default class ServerCard extends Component {
 
     return (
       <TouchableOpacity activeOpacity={0.9} style={styles.card}>
-        <Image style={styles.cardImage} source={image || require('../../assets/images/default.png')}>
+        <Image style={styles.cardImage} source={image || require('../../../assets/images/default.png')}>
           <BlurView tint={tint || 'default'} intensity={intensity || 85} style={{ height: '100%', width: '65%', left: 0, position: 'relative' }}>
             <Text style={styles.playerCount}>{playerCount}</Text>
             <Text style={styles.slash}>/</Text>
@@ -102,10 +102,6 @@ const styles = {
     backgroundColor: 'transparent',
     alignSelf: 'center',
     left: 1
-  },
-  checkIcon: {
-    backgroundColor: 'transparent',
-    alignSelf: 'center'
   },
   card: {
     height: 125,
