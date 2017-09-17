@@ -5,11 +5,13 @@ import { LinearGradient, BlurView } from 'expo';
 import { Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Header from './header';
-import Section from './section';
 import Profile from './profile';
+import Section from './section';
 import EventCard from './eventCard';
 import ServerCard from './serverCard';
 import Shortcut from '../buttons/shortcut';
+
+import NavActions from '../../hocs/eventNavActions';
 
 export default class Home extends Component {
   static navigationOptions = {
@@ -18,6 +20,16 @@ export default class Home extends Component {
   }
 
   render() {
+    const { navigate } = this.props.navigation;
+
+    // Use HOC to declare which route to and pass navigation props to EventCard + ServerCard
+    // const NEW_COMPONENT = NavActions(oldComponent, this.props.navigation.navigate, routeName);
+    // routeName must be capitalized!
+    const Operation = NavActions(EventCard, navigate, "Operation");
+    const Training = NavActions(EventCard, navigate, "Training");
+    const Server = NavActions(ServerCard, navigate);
+
+    // Make sure these are cached in App.js
     const images = {
       basrah: require('../../../assets/images/basrah.png'),
       forest: require('../../../assets/images/forest.png'),
@@ -50,25 +62,25 @@ export default class Home extends Component {
           </Section>
 
           <Section title="EVENTS">
-            <EventCard name="Operation: Open Road" day="03" month="SEPTEMBER" image={images.forest} registered />
-            <EventCard name="Operation: Rook" day="07" month="SEPTEMBER" image={images.lodgie} />
-            <EventCard name="Operation: Mistwalker" day="10" month="SEPTEMBER" image={images.logarNight} intensity={85} registered />
-            <EventCard name="Operation: Desert Tundra" day="14" month="SEPTEMBER" image={images.basrah} />
-            <EventCard name="Operation: Chainlink" day="01" month="OCTOBER" image={images.default} registered />
+            <Operation name="Operation: Open Road" day="03" month="SEPTEMBER" image={images.forest} registered />
+            <Operation name="Operation: Rook" day="07" month="SEPTEMBER" image={images.lodgie} />
+            <Operation name="Operation: Mistwalker" day="10" month="SEPTEMBER" image={images.logarNight} intensity={85} registered />
+            <Operation name="Operation: Desert Tundra" day="14" month="SEPTEMBER" image={images.basrah} />
+            <Operation name="Operation: Chainlink" day="01" month="OCTOBER" image={images.default} registered />
           </Section>
 
           <Section title="TRAINING">
-            <EventCard name="SOTT: Basic Training" day="03" month="SEPTEMBER" image={images.basic} />
-            <EventCard name="SOTT: Advanced Weapon Systems" day="17" month="SEPTEMBER" image={images.aws} registered intensity={90} />
-            <EventCard name="SOTT: Vehicle Training" day="28" month="SEPTEMBER" image={images.vehicle} intensity={87.5} registered />
-            <EventCard name="SOTT: Leadership Training" day="24" month="NOVEMBER" image={images.leadership} intensity={90} registered />
+            <Training name="SOTT: Basic Training" day="03" month="SEPTEMBER" image={images.basic} />
+            <Training name="SOTT: Advanced Weapon Systems" day="17" month="SEPTEMBER" image={images.aws} intensity={90} registered />
+            <Training name="SOTT: Vehicle Training" day="28" month="SEPTEMBER" image={images.vehicle} intensity={87.5} registered />
+            <Training name="SOTT: Leadership Training" day="24" month="NOVEMBER" image={images.leadership} intensity={90} registered />
           </Section>
 
           <Section title="SERVERS">
-            <ServerCard playerCount="78" map="AL BASRAH INV" image={images.basrah} intensity={90} />
-            <ServerCard playerCount="24" map="SUMARI AAS" image={images.forest} />
-            <ServerCard playerCount="01" map="NARVA AAS" image={images.lodgie} />
-            <ServerCard playerCount="00" map="SUMARI AAS" image={images.forest} />
+            <Server playerCount="78" map="AL BASRAH INV" image={images.basrah} intensity={90} />
+            <Server playerCount="24" map="SUMARI AAS" image={images.forest} />
+            <Server playerCount="01" map="NARVA AAS" image={images.lodgie} />
+            <Server playerCount="00" map="SUMARI AAS" image={images.forest} />
           </Section>
 
         </ScrollView>
