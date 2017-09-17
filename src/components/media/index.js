@@ -2,6 +2,11 @@ import React from 'react';
 import { StyleSheet, Text, View, WebView, ScrollView } from 'react-native';
 
 export default class Media extends React.Component {
+  static navigationOptions = {
+    title: 'Media',
+    header: null
+  }
+
   render() {
     return (
       <ScrollView style={styles.container}>
