@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, WebView, ScrollView, TouchableOpacity, StatusBar } from 'react-native';
-import { SimpleLineIcons } from '@expo/vector-icons';
-import { LinearGradient, BlurView } from 'expo';
-import { Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
+import { ScrollView, StatusBar, Animated } from 'react-native';
+import { LinearGradient } from 'expo';
 
 import Header from './header';
 import Profile from './profile';
