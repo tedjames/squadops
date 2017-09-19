@@ -1,12 +1,12 @@
 import React from 'react';
-import { ScrollView, View, Text } from 'react-native';
+import { ScrollView, View, Text, Animated } from 'react-native';
 
-const Section = ({ title, style, children, snapToInterval }) => {
+const Section = ({ title, style, children, snapToInterval, sectionPosition }) => {
   return (
     <View style={{ flex: 1 }}>
       <Text style={styles.sectionName}>{title}</Text>
-      <ScrollView
-        style={style || null}
+      <Animated.ScrollView
+        style={[style || null, { transform: [{ translateY: sectionPosition }] }]}
         contentContainerStyle={{ paddingRight: 15 }}
         showsHorizontalScrollIndicator={false}
         snapToInterval={snapToInterval || 365}
@@ -14,7 +14,7 @@ const Section = ({ title, style, children, snapToInterval }) => {
         horizontal
       >
         {children}
-      </ScrollView>
+      </Animated.ScrollView>
     </View>
   );
 };
@@ -27,7 +27,7 @@ const styles = {
     backgroundColor: 'transparent',
     color: '#32383c',
     marginLeft: 17.5,
-    marginTop: 10
+    marginTop: 12.5
   },
 };
 
