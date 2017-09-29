@@ -38,7 +38,7 @@ const styles = {
     backgroundColor: 'transparent',
     opacity: 0.55,
     position: 'absolute',
-    top: 10,
+    top: 11,
     left: 10
   },
   month: {
@@ -49,7 +49,7 @@ const styles = {
     backgroundColor: 'transparent',
     opacity: 0.55,
     position: 'absolute',
-    top: 11.3,
+    top: 12.3,
     left: 32.5
   },
   time: {
@@ -60,7 +60,7 @@ const styles = {
     backgroundColor: 'transparent',
     opacity: 0.55,
     position: 'absolute',
-    top: 10,
+    top: 11,
     right: 10
   },
   eventTypeContainer: {
