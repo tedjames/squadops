@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { BlurView, LinearGradient } from 'expo';
-import { SimpleLineIcons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 
 class Training extends Component {
   static navigationOptions = {
@@ -29,22 +29,29 @@ class Training extends Component {
           </Image>
           <TouchableOpacity activeOpacity={0.75} style={styles.outerCircle}>
             <View style={styles.innerCircle}>
-              <SimpleLineIcons style={styles.playIcon} name="game-controller" size={20} color="#4922e3" />
+              <Entypo style={styles.playIcon} name="controller-play" size={20} color="#4922e3" />
             </View>
           </TouchableOpacity>
         </TouchableOpacity>
-
-        <View style={styles.infoContainer}>
-          <View style={styles.sectionBar}>
-            <TouchableOpacity style={styles.sectionButton}><Text style={styles.sectionTitle}>US FORCES</Text></TouchableOpacity>
-            <Text style={styles.sectionDivider}>|</Text>
-            <TouchableOpacity style={styles.sectionButton}><Text style={[styles.sectionTitle, styles.selectedTitle]}>INS FORCES</Text></TouchableOpacity>
-            <Text style={styles.sectionDivider}>|</Text>
-            <TouchableOpacity style={styles.sectionButton}><Text style={styles.sectionTitle}>SESSION I</Text></TouchableOpacity>
-            <Text style={styles.sectionDivider}>|</Text>
-            <TouchableOpacity style={styles.sectionButton}><Text style={styles.sectionTitle}>SESSION II</Text></TouchableOpacity>
-          </View>
-        </View>
+        <LinearGradient style={{ flex: 1 }} colors={['#eee', '#fff']}>
+          <ScrollView style={styles.infoContainer}>
+            <View style={{ flexDirection: 'row', marginTop: 70, marginLeft: 15, marginBottom: 7 }}>
+              <Text style={styles.slash}>//</Text>
+              <Text style={styles.eventType}>OPERATION</Text>
+            </View>
+            <Text style={styles.eventName}>OPEN ROAD</Text>
+            <View style={styles.sectionBar}>
+              <TouchableOpacity style={styles.sectionButton}><Text style={styles.sectionTitle}>US FORCES</Text></TouchableOpacity>
+              <Text style={styles.sectionDivider}>|</Text>
+              <TouchableOpacity style={styles.sectionButton}><Text style={[styles.sectionTitle, styles.selectedTitle]}>INS FORCES</Text></TouchableOpacity>
+              <Text style={styles.sectionDivider}>|</Text>
+              <TouchableOpacity style={styles.sectionButton}><Text style={styles.sectionTitle}>SESSION I</Text></TouchableOpacity>
+              <Text style={styles.sectionDivider}>|</Text>
+              <TouchableOpacity style={styles.sectionButton}><Text style={styles.sectionTitle}>SESSION II</Text></TouchableOpacity>
+            </View>
+            <View style={styles.divider} />
+          </ScrollView>
+        </LinearGradient>
 
       </View>
     );
@@ -56,6 +63,36 @@ const styles = {
     height: 180,
     width: '100%',
     position: 'relative'
+  },
+  eventType: {
+    fontFamily: 'rubik-light',
+    fontSize: 11,
+    letterSpacing: 1.25,
+    color: '#a1a1a1'
+  },
+  slash: {
+    fontFamily: 'rubik',
+    fontSize: 8,
+    letterSpacing: 1.5,
+    color: '#a1a1a1',
+    marginRight: 3,
+    top: 2,
+    opacity: 0.75
+  },
+  eventName: {
+    marginLeft: 12.5,
+    fontFamily: 'syncopate',
+    fontSize: 26,
+    letterSpacing: 1,
+    backgroundColor: 'transparent',
+    color: '#252525',
+  },
+  divider: {
+    height: 0.5,
+    backgroundColor: '#000',
+    opacity: 0.05,
+    marginTop: 10,
+    width: '100%'
   },
   cardImage: {
     height: 110,
@@ -134,7 +171,7 @@ const styles = {
     zIndex: 5,
     borderRadius: 12,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: { width: 1, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 13,
     elevation: 1
@@ -142,15 +179,16 @@ const styles = {
   infoContainer: {
     flex: 1,
     width: '100%',
-    backgroundColor: '#f5f5f5',
+    backgroundColor: 'transparent',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: -1 },
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.4,
     shadowRadius: 15,
-    elevation: 1
+    elevation: 1,
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
   },
   sectionBar: {
-    flex: 1,
     justifyContent: 'space-between',
     width: '100%',
     alignSelf: 'center',
@@ -159,7 +197,7 @@ const styles = {
     paddingRight: 15,
   },
   sectionButton: {
-    paddingTop: 90
+    paddingTop: 20
   },
   sectionTitle: {
     fontFamily: 'rubik-light',
@@ -176,7 +214,7 @@ const styles = {
     fontSize: 10,
     backgroundColor: 'transparent',
     opacity: 0.4,
-    paddingTop: 90
+    paddingTop: 20
   },
 };
 
