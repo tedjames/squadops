@@ -1,15 +1,15 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Animated } from 'react-native';
 
-const EventName = ({ name, type }) => {
+const EventName = ({ name, type, opacity, translateY }) => {
   return (
-    <View>
-      <View style={{ flexDirection: 'row', marginTop: 70, marginLeft: 15, marginBottom: 7 }}>
+    <Animated.View style={{ top: 15, marginBottom: 30, opacity: opacity || 1, transform: [{ translateY: translateY || 0 }] }}>
+      <View style={{ flexDirection: 'row', marginTop: 50, marginLeft: 15, marginBottom: 7 }}>
         <Text style={styles.slash}>//</Text>
-        <Text style={styles.eventType}>{type || 'OPERATION'}</Text>
+        <Text style={styles.eventType}>{type || 'UNKNOWN'}</Text>
       </View>
       <Text style={styles.eventName}>{name || 'UNKNOWN'}</Text>
-    </View>
+    </Animated.View>
   );
 };
 
@@ -31,12 +31,11 @@ const styles = {
   },
   eventName: {
     marginLeft: 14,
-    marginBottom: 10,
     marginTop: 2.5,
     fontFamily: 'syncopate',
     fontSize: 28,
     letterSpacing: 1.2,
-    color: '#505050',
+    color: '#3b3b3b',
     alignSelf: 'flex-start',
     textShadowColor: 'rgba(0, 0, 0, 0.025)',
     textShadowOffset: { width: 2, height: 2 },

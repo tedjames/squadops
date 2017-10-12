@@ -1,27 +1,44 @@
 import React from 'react';
-import { TouchableOpacity, View, Text, Image } from 'react-native';
+import { TouchableOpacity, View, Text, Image, Animated } from 'react-native';
 import { BlurView } from 'expo';
 import { Entypo } from '@expo/vector-icons';
 
-const HeaderCard = ({ day, month, image }) => {
+const HeaderCard = ({ day, month, image, translateY }) => {
   return (
-    <TouchableOpacity activeOpacity={0.9} style={styles.floatingCard}>
-      <Image style={styles.cardImage} source={image || require('../../../assets/images/default.png')}>
-        <BlurView intensity={90} style={{ height: '100%', width: '67.5%', left: 0, position: 'relative' }}>
-          <Text style={styles.cardDay}>{day || '??'}</Text>
-          <Text style={styles.cardMonth}>{month || 'UNKNOWN'}</Text>
-        </BlurView>
-      </Image>
-      <TouchableOpacity activeOpacity={0.75} style={styles.outerCircle}>
-        <View style={styles.innerCircle}>
-          <Entypo style={styles.playIcon} name="controller-play" size={20} color="#4922e3" />
-        </View>
+    <Animated.View style={[styles.floatingCard, { transform: [{ translateY: translateY || 0 }] }]}>
+      <TouchableOpacity activeOpacity={0.9} style={{ height: '100%', width: '100%', position: 'relative' }}>
+        <Image style={styles.cardImage} source={image || require('../../../assets/images/default.png')}>
+          <BlurView intensity={90} style={{ height: '100%', width: '67.5%', left: 0, position: 'relative' }}>
+            <Text style={styles.cardDay}>{day || '??'}</Text>
+            <Text style={styles.cardMonth}>{month || 'UNKNOWN'}</Text>
+          </BlurView>
+        </Image>
+        <TouchableOpacity activeOpacity={0.75} style={styles.outerCircle}>
+          <View style={styles.innerCircle}>
+            <Entypo style={styles.playIcon} name="controller-play" size={20} color="#4922e3" />
+          </View>
+        </TouchableOpacity>
       </TouchableOpacity>
-    </TouchableOpacity>
+    </Animated.View>
   );
 };
 
 const styles = {
+  floatingCard: {
+    position: 'absolute',
+    top: 105,
+    height: 110,
+    width: '90%',
+    right: 15,
+    backgroundColor: '#eee',
+    zIndex: 5,
+    borderRadius: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 13,
+    elevation: 1
+  },
   cardImage: {
     height: 110,
     width: '100%',
@@ -88,21 +105,6 @@ const styles = {
     position: 'absolute',
     bottom: 15,
     left: 25,
-  },
-  floatingCard: {
-    position: 'absolute',
-    top: 105,
-    height: 110,
-    width: '90%',
-    right: 15,
-    backgroundColor: '#eee',
-    zIndex: 5,
-    borderRadius: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 1, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 13,
-    elevation: 1
   },
 };
 

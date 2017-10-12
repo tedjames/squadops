@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, Animated, Easing } from 'react-native';
 import { BlurView, LinearGradient } from 'expo';
 import { Entypo, MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
 
 import HeaderImage from './HeaderImage';
 import HeaderCard from './HeaderCard';
-import EventName from './EventName';
+import EventName from './eventName';
 import Section from './section';
 import InfoBar from './infoBar';
 import SectionBar from './sectionBar';
@@ -16,21 +16,63 @@ class Training extends Component {
     header: null
   }
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      scrollY: new Animated.Value(0),
+    };
+  }
+
   render() {
     const { goBack } = this.props.navigation;
     const image = require('../../../assets/images/forest.png');
+    const onScroll = Animated.event(
+      [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }]
+    );
+
+    const imagePosition = this.state.scrollY.interpolate({
+      inputRange: [0, 125],
+      outputRange: [0, -65],
+      extrapolate: 'clamp',
+      easing: Easing.easeOut
+    });
+
+    const cardPosition = this.state.scrollY.interpolate({
+      inputRange: [0, 125],
+      outputRange: [0, -50],
+      extrapolate: 'clamp'
+    });
+
+    const nameOpacity = this.state.scrollY.interpolate({
+      inputRange: [30, 100],
+      outputRange: [1, 0],
+      extrapolate: 'clamp'
+    });
+
+    const namePosition = this.state.scrollY.interpolate({
+      inputRange: [0, 125],
+      outputRange: [0, 10],
+      extrapolate: 'clamp'
+    });
+
+    const sectionBarBackground = this.state.scrollY.interpolate({
+      inputRange: [75, 125],
+      outputRange: ['rgba(255, 255, 255, 0)', 'rgb(255, 255, 255)'],
+      extrapolate: 'clamp'
+    });
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: '#fff' }}>
 
-        <HeaderImage image={image} />
-        <HeaderCard image={image} day="03" month="SEPTEMBER" />
+        <HeaderImage translateY={imagePosition} image={image} />
+        <HeaderCard translateY={cardPosition} image={image} day="03" month="SEPTEMBER" />
 
-        <LinearGradient style={{ flex: 1 }} colors={['#eee', '#fff']}>
-          <ScrollView style={styles.infoContainer}>
-            <EventName type="OPERATION" name="OPEN ROAD" />
+        <LinearGradient style={{ flex: 1 }} colors={['#fff', '#f5f5f5']}>
+          <ScrollView style={styles.infoContainer} onScroll={onScroll} scrollEventThrottle={16} stickyHeaderIndices={[1]}>
+            <EventName translateY={namePosition} opacity={nameOpacity} type="OPERATION" name="OPEN ROAD" />
 
-            <SectionBar  />
+            <SectionBar backgroundColor={sectionBarBackground}  />
 
             <InfoBar session1="15:30" session2="20:30" location="AL BASRAH" />
 
@@ -113,8 +155,6 @@ const styles = {
     shadowOpacity: 0.4,
     shadowRadius: 15,
     elevation: 1,
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
   },
 };
 

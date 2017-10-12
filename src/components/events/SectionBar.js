@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Animated } from 'react-native';
+import { BlurView } from 'expo';
 
-const SectionBar = () => {
+const SectionBar = ({ backgroundColor }) => {
   return (
-    <View>
+    <Animated.View style={{ backgroundColor: backgroundColor || '#fff', borderBottomRightRadius: 4, borderBottomLeftRadius: 4}}>
       <View style={styles.sectionBar}>
         <TouchableOpacity style={styles.sectionButton}><Text style={styles.sectionTitle}>US FORCES</Text></TouchableOpacity>
         <Text style={styles.buttonDivider}>|</Text>
@@ -14,7 +15,7 @@ const SectionBar = () => {
         <TouchableOpacity style={styles.sectionButton}><Text style={styles.sectionTitle}>SESSION II</Text></TouchableOpacity>
       </View>
       <View style={styles.divider} />
-    </View>
+    </Animated.View>
   );
 };
 
@@ -28,7 +29,7 @@ const styles = {
     paddingRight: 15,
   },
   sectionButton: {
-    paddingTop: 20
+    paddingTop: 10
   },
   sectionTitle: {
     fontFamily: 'rubik',
@@ -49,7 +50,7 @@ const styles = {
     fontSize: 10,
     backgroundColor: 'transparent',
     opacity: 0.4,
-    paddingTop: 20
+    paddingTop: 10
   },
   divider: {
     height: 0.5,
