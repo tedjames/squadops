@@ -65,7 +65,7 @@ export default class Home extends Component {
         <StatusBar hidden />
         <ScrollView style={{ flex: 1 }} scrollEventThrottle={16} onScroll={onScroll}>
 
-          <Header time="1:30 PM" />
+          <Header />
           <Profile name="MIYAMOTO" status="Online" hours={174} ops={12} certs={3} />
 
           <Section style={{ flex: 1, height: 125 }} snapToInterval={100} sectionPosition={sectionPosition}>
