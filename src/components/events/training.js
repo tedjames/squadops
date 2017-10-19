@@ -21,14 +21,21 @@ class Training extends Component {
 
     this.state = {
       scrollY: new Animated.Value(0),
+      scrollX: new Animated.Value(0),
     };
   }
 
   render() {
     const { goBack } = this.props.navigation;
+    const { width } = Dimensions.get('window');
     const image = require('../../../assets/images/forest.png');
+
     const onScroll = Animated.event(
       [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }]
+    );
+
+    const onSectionScroll = Animated.event(
+      [{ nativeEvent: { contentOffset: { x: this.state.scrollX } } }]
     );
 
     const imagePosition = this.state.scrollY.interpolate({
@@ -62,8 +69,6 @@ class Training extends Component {
       extrapolate: 'clamp'
     });
 
-    const { width } = Dimensions.get('window');
-
     return (
       <View style={{ flex: 1, backgroundColor: '#fff' }}>
 
@@ -74,12 +79,14 @@ class Training extends Component {
             <ScrollView style={styles.infoContainer} onScroll={onScroll} scrollEventThrottle={16} stickyHeaderIndices={[1]}>
               <EventName translateY={namePosition} opacity={nameOpacity} type="OPERATION" name="OPEN ROAD" />
 
-              <SectionBar backgroundColor={sectionBarBackground}  />
+              <SectionBar scrollX={this.state.scrollX} backgroundColor={sectionBarBackground}  />
               <ScrollView
                 style={{ flex: 1 }}
                 snapToInterval={width}
                 decelerationRate={'fast'}
                 horizontal
+                scrollEventThrottle={16}
+                onScroll={onSectionScroll}
               >
                 <View style={{ width }}>
                   <InfoBar session1="15:30" session2="20:30" location="AL BASRAH" />
@@ -172,6 +179,51 @@ class Training extends Component {
                   </Section>
                 </View>
 
+                <View style={{ width }}>
+                  <InfoBar session1="15:30" session2="20:30" location="AL BASRAH" />
+
+                  <Text style={styles.description}>US command has identified an insurgent stronghold within a village, just a few kilometers from our forward operating base in the suburbs of Al Basrah. Our objective is to eliminate all hostiles and protect the FOB.</Text>
+
+                  <Section title="VICTORY CONDITIONS">
+                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
+                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
+                  </Section>
+
+                  <Section title="INFANTRY ASSETS">
+                    <Text style={styles.sectionNote}>- M4</Text>
+                    <Text style={styles.sectionNote}>- M249 SAW</Text>
+                    <Text style={styles.sectionNote}>- M203</Text>
+                    <Text style={styles.sectionNote}>- M72 LAW</Text>
+                  </Section>
+
+                  <Section title="SUPPORT ASSETS">
+                    <Text style={styles.sectionNote}>- HMMWV</Text>
+                    <Text style={styles.sectionNote}>- Logistic Truck</Text>
+                  </Section>
+
+                  <Section title="LOGISTIC ASSETS">
+                    <Text style={styles.sectionNote}>- COP</Text>
+                    <Text style={styles.sectionNote}>- Possible heavy weapons</Text>
+                  </Section>
+
+                  <Section title="MOBILITY RESTRICTIONS">
+                    <Text style={styles.sectionNote}>- Vehicles must use bridges</Text>
+                  </Section>
+
+                  <Section title="BEFORE LIVE">
+                    <Text style={styles.sectionNote}>- Decide on COP location</Text>
+                  </Section>
+
+                  <Section title="SPECIALTY RULES">
+                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
+                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
+                  </Section>
+
+                  <Section title="INTEL">
+                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
+                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
+                  </Section>
+                </View>
                 <View style={{ width }}>
                   <InfoBar session1="15:30" session2="20:30" location="AL BASRAH" />
 
