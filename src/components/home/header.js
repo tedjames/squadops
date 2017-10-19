@@ -1,17 +1,40 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 
-const Header = ({ time }) => {
-  return (
-    <View style={styles.header}>
-      <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-        <Text style={styles.slash}>//</Text>
-        <Text style={styles.time}>{time}</Text>
+export default class Header extends Component {
+  constructor(props) {
+    super(props);
+    this.updateTime = this.updateTime.bind(this);
+
+    this.state = {
+      time: "",
+    };
+  }
+  updateTime() {
+    let currentTime = new Date()
+    let hours = currentTime.getHours()
+    let minutes = currentTime.getMinutes()
+    if (minutes < 10){
+        minutes = "0" + minutes
+    }
+    let time = hours + ":" + minutes + " ";
+    this.setState({ time });
+  }
+  componentDidMount() {
+    setInterval(this.updateTime, 1000);
+  }
+  render() {
+    return (
+      <View style={styles.header}>
+        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={styles.slash}>//</Text>
+          <Text style={styles.time}>{this.state.time}</Text>
+        </View>
+        <Text style={styles.logoText}>SQUAD OPS</Text>
       </View>
-      <Text style={styles.logoText}>SQUAD OPS</Text>
-    </View>
-  );
-};
+    );
+  }
+}
 
 const styles = {
   slash: {
@@ -46,5 +69,3 @@ const styles = {
     opacity: 0.7
   },
 };
-
-export default Header;
