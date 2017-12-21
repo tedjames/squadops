@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { ScrollView, StatusBar, Animated } from 'react-native';
+import { ScrollView, StatusBar, Animated, FlatList, Text } from 'react-native';
 import { LinearGradient } from 'expo';
 
 import Header from './header';
 import Profile from './profile';
 import Section from './section';
+import EventSection from './eventSection';
 import EventCard from './eventCard';
 import ServerCard from './serverCard';
 import Shortcut from '../buttons/shortcut';
@@ -60,6 +61,47 @@ export default class Home extends Component {
       useNativeDriver: true
     });
 
+    const operations = [
+      {
+        key: '0',
+        name: 'Open Road',
+        day: '03',
+        month: 'SEPTEMBER',
+        image: images.forest,
+        registered: true
+      },
+      {
+        key: '1',
+        name: 'Open Road',
+        day: '03',
+        month: 'SEPTEMBER',
+        image: images.forest,
+        registered: true
+      },
+      {
+        key: '2',
+        name: 'Open Road',
+        day: '03',
+        month: 'SEPTEMBER',
+        image: images.forest,
+        registered: true
+      },
+      {
+        key: '3',
+        name: 'Open Road',
+        day: '03',
+        month: 'SEPTEMBER',
+        image: images.forest,
+      },
+      {
+        key: '4',
+        name: 'Open Road',
+        day: '03',
+        month: 'SEPTEMBER',
+        image: images.forest,
+      },
+    ]
+
     return (
       <LinearGradient style={{ flex: 1 }} colors={['#eee', '#fff']}>
         <StatusBar hidden />
@@ -107,3 +149,15 @@ export default class Home extends Component {
     );
   }
 }
+
+const styles = {
+  sectionName: {
+    fontFamily: 'syncopate',
+    fontSize: 15,
+    letterSpacing: 1.65,
+    backgroundColor: 'transparent',
+    color: '#32383c',
+    marginLeft: 17.5,
+    marginTop: 12.5
+  },
+};
