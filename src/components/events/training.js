@@ -30,39 +30,36 @@ class Training extends Component {
     const { width } = Dimensions.get('window');
     const image = require('../../../assets/images/forest.png');
 
+    // Scroll event processing
     const onScroll = Animated.event(
       [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }]
     );
-
     const onSectionScroll = Animated.event(
       [{ nativeEvent: { contentOffset: { x: this.state.scrollX } } }]
     );
 
+    // Scroll interpolation for animations
     const imagePosition = this.state.scrollY.interpolate({
       inputRange: [0, 125],
       outputRange: [0, -65],
       extrapolate: 'clamp',
       easing: Easing.easeOut
     });
-
     const cardPosition = this.state.scrollY.interpolate({
       inputRange: [0, 125],
       outputRange: [0, -50],
       extrapolate: 'clamp'
     });
-
     const nameOpacity = this.state.scrollY.interpolate({
       inputRange: [30, 100],
       outputRange: [1, 0],
       extrapolate: 'clamp'
     });
-
     const namePosition = this.state.scrollY.interpolate({
       inputRange: [0, 125],
       outputRange: [0, 10],
       extrapolate: 'clamp'
     });
-
     const sectionBarBackground = this.state.scrollY.interpolate({
       inputRange: [75, 125],
       outputRange: ['rgba(255, 255, 255, 0)', 'rgb(255, 255, 255)'],
