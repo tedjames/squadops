@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, View, Text, Image, Animated } from 'react-native';
+import { TouchableOpacity, View, Text, ImageBackground, Animated } from 'react-native';
 import { BlurView } from 'expo';
 import { Entypo } from '@expo/vector-icons';
 
@@ -7,12 +7,12 @@ const HeaderCard = ({ day, month, image, translateY }) => {
   return (
     <Animated.View style={[styles.floatingCard, { transform: [{ translateY: translateY || 0 }] }]}>
       <TouchableOpacity activeOpacity={0.9} style={{ height: '100%', width: '100%', position: 'relative' }}>
-        <Image style={styles.cardImage} source={image || require('../../../assets/images/default.png')}>
+        <ImageBackground style={styles.cardImage} source={image || require('../../../assets/images/default.png')}>
           <BlurView intensity={90} style={{ height: '100%', width: '67.5%', left: 0, position: 'relative' }}>
             <Text style={styles.cardDay}>{day || '??'}</Text>
             <Text style={styles.cardMonth}>{month || 'UNKNOWN'}</Text>
           </BlurView>
-        </Image>
+        </ImageBackground>
         <TouchableOpacity activeOpacity={0.75} style={styles.outerCircle}>
           <View style={styles.innerCircle}>
             <Entypo style={styles.playIcon} name="controller-play" size={20} color="#4922e3" />

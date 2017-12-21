@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, Text, Image, View } from 'react-native';
+import { TouchableOpacity, Text, ImageBackground, View } from 'react-native';
 import { LinearGradient, BlurView } from 'expo';
 import { SimpleLineIcons } from '@expo/vector-icons';
 
@@ -11,8 +11,8 @@ export default class ServerCard extends Component {
 
     return (
       <TouchableOpacity activeOpacity={0.9} style={styles.card}>
-        <Image style={styles.cardImage} source={image || require('../../../assets/images/default.png')}>
-          <BlurView tint={tint || 'default'} intensity={intensity || 85} style={{ height: '100%', width: '65%', left: 0, position: 'relative' }}>
+        <ImageBackground style={styles.cardImage} source={image || require('../../../assets/images/default.png')} borderRadius={12}>
+          <BlurView tint={tint || 'default'} intensity={intensity || 85} style={{ height: '100%', width: '65%', left: 0, position: 'relative', borderBottomLeftRadius: 12, borderTopLeftRadius: 12 }}>
             <Text style={styles.playerCount}>{playerCount}</Text>
             <Text style={styles.slash}>/</Text>
             <Text style={styles.maxPlayers}>{MAX_PLAYERS}</Text>
@@ -23,7 +23,7 @@ export default class ServerCard extends Component {
               <SimpleLineIcons style={styles.playIcon} name="game-controller" size={20} color="#4922e3" />
             </View>
           </View>
-        </Image>
+        </ImageBackground>
       </TouchableOpacity>
     );
   }
