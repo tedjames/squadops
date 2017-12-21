@@ -1,5 +1,8 @@
 import React from 'react';
-import { ScrollView, View, Text, Animated } from 'react-native';
+import { ScrollView, View, Text, Animated, Dimensions } from 'react-native';
+
+const screenWidth = Dimensions.get('window').width;
+const cardWidth = screenWidth / 1.25;
 
 const Section = ({ title, style, children, snapToInterval, sectionPosition }) => {
   return (
@@ -9,7 +12,7 @@ const Section = ({ title, style, children, snapToInterval, sectionPosition }) =>
         style={[style || null, { transform: [{ translateY: sectionPosition }] }]}
         contentContainerStyle={{ paddingRight: 15 }}
         showsHorizontalScrollIndicator={false}
-        snapToInterval={snapToInterval || 365}
+        snapToInterval={snapToInterval || cardWidth}
         decelerationRate={'fast'}
         horizontal
       >
