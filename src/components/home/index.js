@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StatusBar, Animated, FlatList, Text } from 'react-native';
+import { ScrollView, StatusBar, Animated, FlatList, Text, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo';
 
 import Header from './header';
@@ -11,6 +11,9 @@ import ServerCard from './serverCard';
 import Shortcut from '../buttons/shortcut';
 
 import NavActions from '../../hocs/eventNavActions';
+
+const screenWidth = Dimensions.get('window').width;
+const cardWidth = screenWidth / 1.25;
 
 export default class Home extends Component {
   static navigationOptions = {
@@ -64,7 +67,7 @@ export default class Home extends Component {
     const operations = [
       {
         key: '0',
-        name: 'Open Road',
+        name: 'Operation: Open Road',
         day: '03',
         month: 'SEPTEMBER',
         image: images.forest,
@@ -72,33 +75,66 @@ export default class Home extends Component {
       },
       {
         key: '1',
-        name: 'Open Road',
+        name: 'Operation: Rook',
         day: '03',
         month: 'SEPTEMBER',
-        image: images.forest,
+        image: images.lodgie,
         registered: true
       },
       {
         key: '2',
-        name: 'Open Road',
+        name: 'Operation: Mistwalker',
         day: '03',
         month: 'SEPTEMBER',
-        image: images.forest,
+        image: images.logarNight,
         registered: true
       },
       {
         key: '3',
-        name: 'Open Road',
+        name: 'Operation: Desert Tundra',
         day: '03',
         month: 'SEPTEMBER',
-        image: images.forest,
+        image: images.basrah,
       },
       {
         key: '4',
-        name: 'Open Road',
+        name: 'Operation: Chainlink',
         day: '03',
         month: 'SEPTEMBER',
-        image: images.forest,
+        image: images.default,
+      },
+    ];
+
+    const training = [
+      {
+        key: '0',
+        name: 'SOTT: Basic Training',
+        day: '03',
+        month: 'SEPTEMBER',
+        image: images.basic,
+        registered: true
+      },
+      {
+        key: '1',
+        name: 'SOTT: Advanced Weapon Systems',
+        day: '03',
+        month: 'SEPTEMBER',
+        image: images.aws,
+        registered: true
+      },
+      {
+        key: '2',
+        name: 'SOTT: Vehicle Training',
+        day: '03',
+        month: 'SEPTEMBER',
+        image: images.vehicle,
+      },
+      {
+        key: '3',
+        name: 'SOTT: Leadership Training',
+        day: '03',
+        month: 'SEPTEMBER',
+        image: images.leadership,
       },
     ]
 
@@ -122,20 +158,9 @@ export default class Home extends Component {
             <Shortcut type="MaterialCommunityIcons" name="discord" size={18} label="Discord" top={16} />
           </Section>
 
-          <Section title="EVENTS" sectionPosition={sectionPosition}>
-            <Operation name="Operation: Open Road" day="03" month="SEPTEMBER" image={images.forest} registered />
-            <Operation name="Operation: Rook" day="07" month="SEPTEMBER" image={images.lodgie} />
-            <Operation name="Operation: Mistwalker" day="10" month="SEPTEMBER" image={images.logarNight} intensity={85} registered />
-            <Operation name="Operation: Desert Tundra" day="14" month="SEPTEMBER" image={images.basrah} />
-            <Operation name="Operation: Chainlink" day="01" month="OCTOBER" image={images.default} registered />
-          </Section>
+          <EventSection title="EVENTS" data={operations} navigate={navigate} sectionPosition={sectionPosition} />
 
-          <Section title="TRAINING" sectionPosition={sectionPosition}>
-            <Training name="SOTT: Basic Training" day="03" month="SEPTEMBER" image={images.basic} />
-            <Training name="SOTT: Advanced Weapon Systems" day="17" month="SEPTEMBER" image={images.aws} intensity={90} registered />
-            <Training name="SOTT: Vehicle Training" day="28" month="SEPTEMBER" image={images.vehicle} intensity={87.5} registered />
-            <Training name="SOTT: Leadership Training" day="24" month="NOVEMBER" image={images.leadership} intensity={90} registered />
-          </Section>
+          <EventSection title="TRAINING" data={training} navigate={navigate} sectionPosition={sectionPosition} />
 
           <Section title="SERVERS" sectionPosition={sectionPosition}>
             <Server playerCount="78" map="AL BASRAH INV" image={images.basrah} intensity={90} />
