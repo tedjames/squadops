@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
-import { TabNavigator } from 'react-navigation';
-import { BlurView } from 'expo';
-import { Ionicons } from '@expo/vector-icons';
+import { Dimensions, View, Text, Image, ScrollView, TouchableOpacity, Animated, Easing } from 'react-native';
+import { BlurView, LinearGradient } from 'expo';
+import { Entypo, MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
+
+import HeaderImage from './HeaderImage';
+import HeaderCard from './HeaderCard';
+import EventName from './eventName';
+import Section from './section';
+import InfoBar from './infoBar';
+import SectionBar from './sectionBar';
 
 class Operation extends Component {
   static navigationOptions = {
@@ -10,197 +16,309 @@ class Operation extends Component {
     header: null
   }
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      scrollY: new Animated.Value(0),
+      scrollX: new Animated.Value(0),
+    };
+  }
+
   render() {
     const { goBack } = this.props.navigation;
+    const { width } = Dimensions.get('window');
+    const image = require('../../../assets/images/forest.png');
+
+    // Scroll event processing
+    const onScroll = Animated.event(
+      [{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }]
+    );
+    const onSectionScroll = Animated.event(
+      [{ nativeEvent: { contentOffset: { x: this.state.scrollX } } }]
+    );
+
+    // Scroll interpolation for animations
+    const imagePosition = this.state.scrollY.interpolate({
+      inputRange: [0, 125],
+      outputRange: [0, -65],
+      extrapolate: 'clamp',
+      easing: Easing.easeOut
+    });
+    const cardPosition = this.state.scrollY.interpolate({
+      inputRange: [0, 125],
+      outputRange: [0, -50],
+      extrapolate: 'clamp'
+    });
+    const nameOpacity = this.state.scrollY.interpolate({
+      inputRange: [30, 100],
+      outputRange: [1, 0],
+      extrapolate: 'clamp'
+    });
+    const namePosition = this.state.scrollY.interpolate({
+      inputRange: [0, 125],
+      outputRange: [0, 10],
+      extrapolate: 'clamp'
+    });
+    const sectionBarBackground = this.state.scrollY.interpolate({
+      inputRange: [75, 125],
+      outputRange: ['rgba(255, 255, 255, 0)', 'rgb(255, 255, 255)'],
+      extrapolate: 'clamp'
+    });
 
     return (
-      <View style={{ flex: 1, backgroundColor: 'black' }}>
-        <View style={{ height: 22, width: '100%', position: 'relative', backgroundColor: '#e0e0e0' }}>
-          <Text style={styles.day}>03</Text>
-          <Text style={styles.month}>SEPTEMBER</Text>
-          <Text style={styles.time}>15:30 / 20:30</Text>
-        </View>
-        <ScrollView style={styles.container}>
-          <View style={styles.imageBackground} />
-          <Image style={styles.cardImage} source={require('../../../assets/images/forest.png')}>
-            <BlurView tint={'dark'} intensity={80} style={{ height: '100%', width: '100%', left: 0, position: 'relative' }}>
-              <View style={styles.eventTypeContainer}>
-                <View style={styles.line} />
-                <Text style={styles.eventType}>OPERATION</Text>
-                <View style={styles.line} />
-              </View>
-              <Text style={styles.name}>OPEN ROAD</Text>
-            </BlurView>
-          </Image>
-          <View style={styles.sectionBar}>
-            <TouchableOpacity style={styles.sectionButton}><Text style={styles.sectionTitle}>US FORCES</Text></TouchableOpacity>
-            <Text style={styles.sectionDivider}>|</Text>
-            <TouchableOpacity style={styles.sectionButton}><Text style={[styles.sectionTitle, styles.selectedTitle]}>INS FORCES</Text></TouchableOpacity>
-            <Text style={styles.sectionDivider}>|</Text>
-            <TouchableOpacity style={styles.sectionButton}><Text style={styles.sectionTitle}>SESSION I</Text></TouchableOpacity>
-            <Text style={styles.sectionDivider}>|</Text>
-            <TouchableOpacity style={styles.sectionButton}><Text style={styles.sectionTitle}>SESSION II</Text></TouchableOpacity>
-          </View>
-          <View style={styles.divider} />
-        </ScrollView>
-        <TouchableOpacity activeOpacity={0.6} onPress={() => goBack()}>
-          <BlurView style={styles.backButton} intensity={80}>
-            <Ionicons name="ios-arrow-round-back" color="#252525" size={35} />
-          </BlurView>
-        </TouchableOpacity>
+      <View style={{ flex: 1, backgroundColor: '#fff' }}>
+
+        <HeaderImage translateY={imagePosition} image={image} />
+        <HeaderCard translateY={cardPosition} image={image} day="03" month="SEPTEMBER" />
+
+        <LinearGradient style={{ flex: 1 }} colors={['#fff', '#f5f5f5']}>
+            <ScrollView style={styles.infoContainer} onScroll={onScroll} scrollEventThrottle={16} stickyHeaderIndices={[1]}>
+              <EventName translateY={namePosition} opacity={nameOpacity} type="OPERATION" name="OPEN ROAD" />
+
+              <SectionBar scrollX={this.state.scrollX} backgroundColor={sectionBarBackground}  />
+              <ScrollView
+                style={{ flex: 1 }}
+                snapToInterval={width}
+                decelerationRate={'fast'}
+                horizontal
+                scrollEventThrottle={16}
+                onScroll={onSectionScroll}
+              >
+                <View style={{ width }}>
+                  <InfoBar session1="15:30" session2="20:30" location="AL BASRAH" />
+
+                  <Text style={styles.description}>US command has identified an insurgent stronghold within a village, just a few kilometers from our forward operating base in the suburbs of Al Basrah. Our objective is to eliminate all hostiles and protect the FOB.</Text>
+
+                  <Section title="VICTORY CONDITIONS">
+                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
+                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
+                  </Section>
+
+                  <Section title="INFANTRY ASSETS">
+                    <Text style={styles.sectionNote}>- M4</Text>
+                    <Text style={styles.sectionNote}>- M249 SAW</Text>
+                    <Text style={styles.sectionNote}>- M203</Text>
+                    <Text style={styles.sectionNote}>- M72 LAW</Text>
+                  </Section>
+
+                  <Section title="SUPPORT ASSETS">
+                    <Text style={styles.sectionNote}>- HMMWV</Text>
+                    <Text style={styles.sectionNote}>- Logistic Truck</Text>
+                  </Section>
+
+                  <Section title="LOGISTIC ASSETS">
+                    <Text style={styles.sectionNote}>- COP</Text>
+                    <Text style={styles.sectionNote}>- Possible heavy weapons</Text>
+                  </Section>
+
+                  <Section title="MOBILITY RESTRICTIONS">
+                    <Text style={styles.sectionNote}>- Vehicles must use bridges</Text>
+                  </Section>
+
+                  <Section title="BEFORE LIVE">
+                    <Text style={styles.sectionNote}>- Decide on COP location</Text>
+                  </Section>
+
+                  <Section title="SPECIALTY RULES">
+                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
+                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
+                  </Section>
+
+                  <Section title="INTEL">
+                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
+                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
+                  </Section>
+                </View>
+                <View style={{ width }}>
+                  <InfoBar session1="15:30" session2="20:30" location="AL BASRAH" />
+
+                  <Text style={styles.description}>US command has identified an insurgent stronghold within a village, just a few kilometers from our forward operating base in the suburbs of Al Basrah. Our objective is to eliminate all hostiles and protect the FOB.</Text>
+
+                  <Section title="VICTORY CONDITIONS">
+                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
+                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
+                  </Section>
+
+                  <Section title="INFANTRY ASSETS">
+                    <Text style={styles.sectionNote}>- M4</Text>
+                    <Text style={styles.sectionNote}>- M249 SAW</Text>
+                    <Text style={styles.sectionNote}>- M203</Text>
+                    <Text style={styles.sectionNote}>- M72 LAW</Text>
+                  </Section>
+
+                  <Section title="SUPPORT ASSETS">
+                    <Text style={styles.sectionNote}>- HMMWV</Text>
+                    <Text style={styles.sectionNote}>- Logistic Truck</Text>
+                  </Section>
+
+                  <Section title="LOGISTIC ASSETS">
+                    <Text style={styles.sectionNote}>- COP</Text>
+                    <Text style={styles.sectionNote}>- Possible heavy weapons</Text>
+                  </Section>
+
+                  <Section title="MOBILITY RESTRICTIONS">
+                    <Text style={styles.sectionNote}>- Vehicles must use bridges</Text>
+                  </Section>
+
+                  <Section title="BEFORE LIVE">
+                    <Text style={styles.sectionNote}>- Decide on COP location</Text>
+                  </Section>
+
+                  <Section title="SPECIALTY RULES">
+                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
+                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
+                  </Section>
+
+                  <Section title="INTEL">
+                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
+                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
+                  </Section>
+                </View>
+
+                <View style={{ width }}>
+                  <InfoBar session1="15:30" session2="20:30" location="AL BASRAH" />
+
+                  <Text style={styles.description}>US command has identified an insurgent stronghold within a village, just a few kilometers from our forward operating base in the suburbs of Al Basrah. Our objective is to eliminate all hostiles and protect the FOB.</Text>
+
+                  <Section title="VICTORY CONDITIONS">
+                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
+                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
+                  </Section>
+
+                  <Section title="INFANTRY ASSETS">
+                    <Text style={styles.sectionNote}>- M4</Text>
+                    <Text style={styles.sectionNote}>- M249 SAW</Text>
+                    <Text style={styles.sectionNote}>- M203</Text>
+                    <Text style={styles.sectionNote}>- M72 LAW</Text>
+                  </Section>
+
+                  <Section title="SUPPORT ASSETS">
+                    <Text style={styles.sectionNote}>- HMMWV</Text>
+                    <Text style={styles.sectionNote}>- Logistic Truck</Text>
+                  </Section>
+
+                  <Section title="LOGISTIC ASSETS">
+                    <Text style={styles.sectionNote}>- COP</Text>
+                    <Text style={styles.sectionNote}>- Possible heavy weapons</Text>
+                  </Section>
+
+                  <Section title="MOBILITY RESTRICTIONS">
+                    <Text style={styles.sectionNote}>- Vehicles must use bridges</Text>
+                  </Section>
+
+                  <Section title="BEFORE LIVE">
+                    <Text style={styles.sectionNote}>- Decide on COP location</Text>
+                  </Section>
+
+                  <Section title="SPECIALTY RULES">
+                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
+                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
+                  </Section>
+
+                  <Section title="INTEL">
+                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
+                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
+                  </Section>
+                </View>
+                <View style={{ width }}>
+                  <InfoBar session1="15:30" session2="20:30" location="AL BASRAH" />
+
+                  <Text style={styles.description}>US command has identified an insurgent stronghold within a village, just a few kilometers from our forward operating base in the suburbs of Al Basrah. Our objective is to eliminate all hostiles and protect the FOB.</Text>
+
+                  <Section title="VICTORY CONDITIONS">
+                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
+                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
+                  </Section>
+
+                  <Section title="INFANTRY ASSETS">
+                    <Text style={styles.sectionNote}>- M4</Text>
+                    <Text style={styles.sectionNote}>- M249 SAW</Text>
+                    <Text style={styles.sectionNote}>- M203</Text>
+                    <Text style={styles.sectionNote}>- M72 LAW</Text>
+                  </Section>
+
+                  <Section title="SUPPORT ASSETS">
+                    <Text style={styles.sectionNote}>- HMMWV</Text>
+                    <Text style={styles.sectionNote}>- Logistic Truck</Text>
+                  </Section>
+
+                  <Section title="LOGISTIC ASSETS">
+                    <Text style={styles.sectionNote}>- COP</Text>
+                    <Text style={styles.sectionNote}>- Possible heavy weapons</Text>
+                  </Section>
+
+                  <Section title="MOBILITY RESTRICTIONS">
+                    <Text style={styles.sectionNote}>- Vehicles must use bridges</Text>
+                  </Section>
+
+                  <Section title="BEFORE LIVE">
+                    <Text style={styles.sectionNote}>- Decide on COP location</Text>
+                  </Section>
+
+                  <Section title="SPECIALTY RULES">
+                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
+                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
+                  </Section>
+
+                  <Section title="INTEL">
+                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
+                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
+                  </Section>
+                </View>
+
+              </ScrollView>
+
+            </ScrollView>
+        </LinearGradient>
+
       </View>
     );
   }
 }
 
 const styles = {
-  container: {
-    backgroundColor: '#e0e0e0',
-    flex: 1,
+  sectionNote: {
+    fontFamily: 'open-sans',
+    fontSize: 14,
+    color: '#3e3e3e',
+    paddingLeft: 12.5,
+    paddingRight: 12.5,
+    opacity: 0.75,
+    lineHeight: 22
   },
-  imageBackground: {
-    backgroundColor: '#e0e0e0',
-    position: 'absolute',
-    top: 85,
-    height: 100,
-    width: '100%'
+  description: {
+    fontFamily: 'open-sans',
+    fontSize: 14,
+    color: '#3e3e3e',
+    paddingLeft: 12.5,
+    paddingRight: 12.5,
+    marginTop: 12.5,
+    opacity: 0.75,
+    lineHeight: 22
   },
-  divider: {
-    height: 1,
-    backgroundColor: '#bdbdbd',
-    width: '100%'
-  },
-  sectionBar: {
+  infoContainer: {
     flex: 1,
     width: '100%',
-    alignSelf: 'center',
-    flexDirection: 'row',
-    paddingLeft: 15,
-    paddingRight: 15,
-    justifyContent: 'space-between',
-    backgroundColor: '#e0e0e0',
-    borderRadius: 5
-  },
-  sectionButton: {
-    paddingTop: 12,
-    paddingBottom: 8
-  },
-  backButton: {
-    position: 'absolute',
-    bottom: 27.5,
-    right: 25,
-    borderRadius: 32.5,
-    height: 65,
-    width: 65,
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    opacity: 0.9,
+    backgroundColor: 'transparent',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.75,
-    shadowRadius: 6,
+    shadowOffset: { width: 0, height: -1 },
+    shadowOpacity: 0.4,
+    shadowRadius: 15,
     elevation: 1,
   },
-  sectionTitle: {
-    fontFamily: 'rubik-light',
-    color: '#000000',
-    letterSpacing: 2.25,
-    fontSize: 10,
-    backgroundColor: 'transparent',
-    opacity: 0.75,
-    alignSelf: 'center'
-  },
-  sectionDivider: {
-    fontFamily: 'rubik-light',
-    color: '#000000',
-    letterSpacing: 2.25,
-    fontSize: 10,
-    backgroundColor: 'transparent',
-    opacity: 0.5,
-    alignSelf: 'center'
-  },
-  selectedTitle: {
-    opacity: 1
-  },
-  day: {
-    fontFamily: 'rubik-light',
-    color: '#252525',
-    letterSpacing: 2.25,
-    fontSize: 9.5,
-    backgroundColor: 'transparent',
-    opacity: 0.8,
-    position: 'absolute',
-    top: 6,
-    left: 8
-  },
-  month: {
-    fontFamily: 'syncopate',
-    color: '#252525',
-    letterSpacing: 2.25,
-    fontSize: 9.5,
-    backgroundColor: 'transparent',
-    opacity: 0.8,
-    position: 'absolute',
-    top: 7.3,
-    left: 30.5
-  },
-  time: {
-    fontFamily: 'rubik-light',
-    color: '#252525',
-    letterSpacing: 2,
-    fontSize: 9.5,
-    backgroundColor: 'transparent',
-    opacity: 0.8,
-    position: 'absolute',
-    top: 6,
-    right: 8
-  },
-  eventTypeContainer: {
-    flex: 1,
+  tabContainer: {
     flexDirection: 'row',
+    height: 48,
+  },
+  tab: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'absolute',
-    bottom: 90,
-    alignSelf: 'center'
-  },
-  line: {
-    height: 0.5,
-    width: 25,
-    backgroundColor: '#edb74d',
-    opacity: 0.4
-  },
-  eventType: {
-    fontFamily: 'rubik',
-    fontSize: 11,
-    color: '#eee',
-    letterSpacing: 2.5,
-    alignSelf: 'center',
-    marginLeft: 17.5,
-    marginRight: 17.5,
-    backgroundColor: 'transparent',
-    opacity: 0.7
-  },
-  name: {
-    fontFamily: 'syncopate',
-    fontSize: 19,
-    color: '#f5f5f5',
-    letterSpacing: 2,
-    alignSelf: 'center',
-    marginTop: 20,
-    backgroundColor: 'transparent',
-    opacity: 0.9,
-    position: 'absolute',
-    bottom: 65
-  },
-  cardImage: {
-    height: 175,
-    width: '97.5%',
-    position: 'relative',
-    alignSelf: 'center',
-    borderRadius: 5,
-    marginTop: 5
+    margin: 4,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 4,
   },
 };
 
