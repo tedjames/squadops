@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
-import { ScrollView, StatusBar, Animated, FlatList, Text, Dimensions } from 'react-native';
+import { ScrollView, StatusBar, Animated, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo';
 
 import Header from './header';
 import Profile from './profile';
 import Section from './section';
-import EventSection from './eventSection';
-import EventCard from './eventCard';
-import ServerCard from './serverCard';
-import Shortcut from '../buttons/shortcut';
 
+// Navigation HOC helper
 import NavActions from '../../hocs/eventNavActions';
 
 const screenWidth = Dimensions.get('window').width;
@@ -40,9 +37,9 @@ export default class Home extends Component {
     // Use HOC to declare which route to and pass navigation props to EventCard + ServerCard
     // const NEW_COMPONENT = NavActions(oldComponent, this.props.navigation.navigate, routeName);
     // routeName must be capitalized!
-    const Operation = NavActions(EventCard, navigate, 'Operation');
-    const Training = NavActions(EventCard, navigate, 'Training');
-    const Server = NavActions(ServerCard, navigate);
+    // const Operation = NavActions(EventCard, navigate, 'Operation');
+    // const Training = NavActions(EventCard, navigate, 'Training');
+    // const Server = NavActions(ServerCard, navigate);
     // const ParallaxSection = Parallax(7, scrollY);
 
     // Make sure these are cached in App.js and optimized for web
@@ -104,7 +101,6 @@ export default class Home extends Component {
         image: images.default,
       },
     ];
-
     const training = [
       {
         key: '0',
@@ -137,6 +133,100 @@ export default class Home extends Component {
         image: images.leadership,
       },
     ]
+    const servers = [
+      {
+        key: '0',
+        playerCount: '78',
+        map: 'AL BASRAH INV',
+        image: images.basrah,
+        intensity: 90
+      },
+      {
+        key: '1',
+        playerCount: '78',
+        map: 'SUMARI AAS',
+        image: images.forest
+      },
+      {
+        key: '2',
+        playerCount: '78',
+        map: 'NARVA AAS',
+        image: images.lodgie
+      },
+      {
+        key: '3',
+        playerCount: '78',
+        map: 'SUMARI AAS',
+        image: images.forest
+      },
+    ]
+    const shortcuts = [
+      {
+        key: '0',
+        name: 'play',
+        label: 'Media',
+        size: 25,
+        top: 14
+      },
+      {
+        key: '1',
+        name: 'check',
+        label: 'Rules',
+        size: 25,
+        top: 15
+      },
+      {
+        key: '2',
+        name: 'gear',
+        label: 'Settings',
+        size: 23,
+        top: 15
+      },
+      {
+        key: '3',
+        name: 'question',
+        label: 'Support',
+        size: 24,
+        top: 15
+      },
+      {
+        key: '4',
+        name: 'like',
+        label: 'Facebook',
+        size: 24,
+        top: 15
+      },
+      {
+        key: '5',
+        name: 'heart',
+        label: 'Donate',
+        size: 22,
+        top: 16.5
+      },
+      {
+        key: '6',
+        iconType: 'MaterialCommunityIcons',
+        name: 'twitch',
+        label: 'Twitch',
+        size: 18,
+        top: 15
+      },
+      {
+        key: '7',
+        name: 'sc-youtube',
+        label: 'Youtube',
+        size: 25,
+        top: 15
+      },
+      {
+        key: '8',
+        iconType: 'MaterialCommunityIcons',
+        name: 'discord',
+        label: 'Discord',
+        size: 18,
+        top: 16
+      }
+    ]
 
     return (
       <LinearGradient style={{ flex: 1 }} colors={['#eee', '#fff']}>
@@ -146,28 +236,13 @@ export default class Home extends Component {
           <Header />
           <Profile name="MIYAMOTO" status="Online" hours={174} ops={12} certs={3} />
 
-          <Section style={{ flex: 1, height: 125 }} snapToInterval={100} sectionPosition={sectionPosition}>
-            <Shortcut name="play" size={25} label="Media" top={14} />
-            <Shortcut name="check" size={25} label="Rules" top={15} />
-            <Shortcut name="gear" size={23} label="Settings" top={15} />
-            <Shortcut name="question" size={24} label="Support" top={15} />
-            <Shortcut name="like" size={24} label="Facebook" top={15} />
-            <Shortcut name="heart" size={22} label="Donate" top={16.5} />
-            <Shortcut type="MaterialCommunityIcons" name="twitch" size={18} label="Twitch" top={15} />
-            <Shortcut name="sc-youtube" size={25} label="Youtube" top={15} />
-            <Shortcut type="MaterialCommunityIcons" name="discord" size={18} label="Discord" top={16} />
-          </Section>
+          <Section type="shortcuts" data={shortcuts} style={{ flex: 1, height: 125 }} snapToInterval={100} navigate={navigate} sectionPosition={sectionPosition} />
 
-          <EventSection title="EVENTS" data={operations} navigate={navigate} sectionPosition={sectionPosition} />
+          <Section title="EVENTS" type="operations" data={operations} navigate={navigate} sectionPosition={sectionPosition} />
 
-          <EventSection title="TRAINING" data={training} navigate={navigate} sectionPosition={sectionPosition} />
+          <Section title="TRAINING" type="training" data={training} navigate={navigate} sectionPosition={sectionPosition} />
 
-          <Section title="SERVERS" sectionPosition={sectionPosition}>
-            <Server playerCount="78" map="AL BASRAH INV" image={images.basrah} intensity={90} />
-            <Server playerCount="24" map="SUMARI AAS" image={images.forest} />
-            <Server playerCount="01" map="NARVA AAS" image={images.lodgie} />
-            <Server playerCount="00" map="SUMARI AAS" image={images.forest} />
-          </Section>
+          <Section title="SERVERS" type="servers" data={servers} navigate={navigate} sectionPosition={sectionPosition} />
 
         </ScrollView>
       </LinearGradient>
