@@ -6,8 +6,10 @@ import Header from './header';
 import Profile from './profile';
 import Section from './section';
 
-// Navigation HOC helper
+// Navigation HOC - attaches navigation helper
 import NavActions from '../../hocs/eventNavActions';
+// Parallax HOC - attaches scroll interpolated value for parallax animations
+import Parallax from '../../hocs/parallax';
 
 const screenWidth = Dimensions.get('window').width;
 const cardWidth = screenWidth / 1.25;
@@ -60,6 +62,10 @@ export default class Home extends Component {
       outputRange: [4.5, 7, 0, -2.5],
       useNativeDriver: true
     });
+    // Apply navigation helper
+    const SectionView = NavActions(Section, navigate);
+    // Apply animated value for parallax animation
+    const AnimatedSection = Parallax(SectionView, sectionPosition);
 
     const operations = [
       {
@@ -236,13 +242,13 @@ export default class Home extends Component {
           <Header />
           <Profile name="MIYAMOTO" status="Online" hours={174} ops={12} certs={3} />
 
-          <Section type="shortcuts" data={shortcuts} style={{ flex: 1, height: 125 }} snapToInterval={100} navigate={navigate} sectionPosition={sectionPosition} />
+          <AnimatedSection sectionType="shortcuts" data={shortcuts} style={{ flex: 1, height: 125 }} snapToInterval={100} />
 
-          <Section title="EVENTS" type="operations" data={operations} navigate={navigate} sectionPosition={sectionPosition} />
+          <AnimatedSection title="EVENTS" sectionType="operations" data={operations} />
 
-          <Section title="TRAINING" type="training" data={training} navigate={navigate} sectionPosition={sectionPosition} />
+          <AnimatedSection title="TRAINING" sectionType="training" data={training} />
 
-          <Section title="SERVERS" type="servers" data={servers} navigate={navigate} sectionPosition={sectionPosition} />
+          <AnimatedSection title="SERVERS" sectionType="servers" data={servers} />
 
         </ScrollView>
       </LinearGradient>
