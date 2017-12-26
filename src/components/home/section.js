@@ -27,9 +27,9 @@ const renderServer = ({ playerCount, map, name, day, month, intensity, image, gr
   return <Server playerCount={playerCount} map={map} name={name} day={day} month={month} intensity={intensity} image={image} gradient={gradient} tint={tint} />;
 }
 
-// Rendering helper to determine what to render based on item type ('shortcuts', 'servers', 'operations', or 'training')
-const renderItem = (type, item, navigate) => {
-  switch (type) {
+// Rendering helper to determine what to render based on item sectionType ('shortcuts', 'servers', 'operations', or 'training')
+const renderItem = (sectionType, item, navigate) => {
+  switch (sectionType) {
     case 'shortcuts':
       return renderShortcut(item, navigate);
     case 'servers':
@@ -39,12 +39,12 @@ const renderItem = (type, item, navigate) => {
     case 'training':
       return renderOperation(item, navigate);
     default:
-      console.error('Event type not defined. Please set type prop to "shortcuts", "servers", "operations", or "training". ');
+      console.error('Event sectionType not defined. Please set sectionType prop to "shortcuts", "servers", "operations", or "training". ');
       break;
   }
 }
 
-const EventSection = ({ title, type, sectionPosition, data, navigate, snapToInterval, style }) => {
+const Section = ({ title, sectionType, sectionPosition, data, navigate, snapToInterval, style }) => {
   return (
     <View style={{ flex: 1 }}>
       <Text style={styles.sectionName}>{title}</Text>
@@ -56,7 +56,7 @@ const EventSection = ({ title, type, sectionPosition, data, navigate, snapToInte
         decelerationRate={'fast'}
         horizontal
         data={data}
-        renderItem={({ item }) => renderItem(type, item, navigate)}
+        renderItem={({ item }) => renderItem(sectionType, item, navigate)}
       />
     </View>
   );
@@ -74,4 +74,4 @@ const styles = {
   },
 };
 
-export default EventSection;
+export default Section;
