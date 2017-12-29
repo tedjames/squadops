@@ -3,12 +3,15 @@ import { Dimensions, View, Text, Image, ScrollView, TouchableOpacity, Animated, 
 import { BlurView, LinearGradient } from 'expo';
 import { Entypo, MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
 
-import HeaderImage from './HeaderImage';
-import HeaderCard from './HeaderCard';
+import HeaderImage from './headerImage';
+import HeaderCard from './headerCard';
 import EventName from './eventName';
 import Section from './section';
-import InfoBar from './infoBar';
 import SectionBar from './sectionBar';
+import Roster from './roster';
+import Details from './details';
+
+import { roster, operationDetails } from './operationData';
 
 class Training extends Component {
   static navigationOptions = {
@@ -22,10 +25,53 @@ class Training extends Component {
     this.state = {
       scrollY: new Animated.Value(0),
       scrollX: new Animated.Value(0),
+      roster: {}
     };
+
+    this.getRowData = this.getRowData.bind(this);
+  }
+
+  getRowData(data) {
+    console.log(data);
+    const rowCount = data.length;
+    const cleanedData = [] // intialize new array of data
+    const itemsPerRow = 2;
+    for (let i = 0; i < rowCount; i++) {
+      const rowData = {} // initialize new row of data
+      const startIndex = i * itemsPerRow;
+      const endIndex = startIndex + itemsPerRow;
+      const items = data.slice(startIndex, endIndex); // get 2 users at a time from the data array
+      if (items.length > 0) { // if statement used to prevent adding empty arrays (strange bug i guess..?)
+        // update row data
+        console.log('items: ', items);
+        const rowData = {
+          key: i,
+          user1: items[0].name,
+          user2: items.length > 1 ? items[1].name : ''
+        }
+        // update cleanedData array w/ new rowData
+        cleanedData.push(rowData);
+      }
+    }
+    return cleanedData;
+  }
+
+  componentWillMount() {
+    this.setState({
+      roster: {
+        commands: this.getRowData(roster.commands),
+        squadLeaders: this.getRowData(roster.squadLeaders),
+        admins: this.getRowData(roster.admins),
+        commentators: this.getRowData(roster.commentators),
+        specialGuests: this.getRowData(roster.specialGuests),
+        confirmed: this.getRowData(roster.confirmed),
+        reserves: this.getRowData(roster.reserves),
+      }
+    });
   }
 
   render() {
+    const { roster } = this.state;
     const { goBack } = this.props.navigation;
     const { width } = Dimensions.get('window');
     const image = require('../../../assets/images/forest.png');
@@ -80,192 +126,17 @@ class Training extends Component {
               <ScrollView
                 style={{ flex: 1 }}
                 snapToInterval={width}
+                pagingEnabled={false}
                 decelerationRate={'fast'}
                 horizontal
                 scrollEventThrottle={16}
                 onScroll={onSectionScroll}
               >
-                <View style={{ width }}>
-                  <InfoBar session1="15:30" session2="20:30" location="AL BASRAH" />
+                <Details operationDetails={operationDetails} />
+                <Details operationDetails={operationDetails} />
 
-                  <Text style={styles.description}>US command has identified an insurgent stronghold within a village, just a few kilometers from our forward operating base in the suburbs of Al Basrah. Our objective is to eliminate all hostiles and protect the FOB.</Text>
-
-                  <Section title="VICTORY CONDITIONS">
-                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
-                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
-                  </Section>
-
-                  <Section title="INFANTRY ASSETS">
-                    <Text style={styles.sectionNote}>- M4</Text>
-                    <Text style={styles.sectionNote}>- M249 SAW</Text>
-                    <Text style={styles.sectionNote}>- M203</Text>
-                    <Text style={styles.sectionNote}>- M72 LAW</Text>
-                  </Section>
-
-                  <Section title="SUPPORT ASSETS">
-                    <Text style={styles.sectionNote}>- HMMWV</Text>
-                    <Text style={styles.sectionNote}>- Logistic Truck</Text>
-                  </Section>
-
-                  <Section title="LOGISTIC ASSETS">
-                    <Text style={styles.sectionNote}>- COP</Text>
-                    <Text style={styles.sectionNote}>- Possible heavy weapons</Text>
-                  </Section>
-
-                  <Section title="MOBILITY RESTRICTIONS">
-                    <Text style={styles.sectionNote}>- Vehicles must use bridges</Text>
-                  </Section>
-
-                  <Section title="BEFORE LIVE">
-                    <Text style={styles.sectionNote}>- Decide on COP location</Text>
-                  </Section>
-
-                  <Section title="SPECIALTY RULES">
-                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
-                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
-                  </Section>
-
-                  <Section title="INTEL">
-                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
-                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
-                  </Section>
-                </View>
-                <View style={{ width }}>
-                  <InfoBar session1="15:30" session2="20:30" location="AL BASRAH" />
-
-                  <Text style={styles.description}>US command has identified an insurgent stronghold within a village, just a few kilometers from our forward operating base in the suburbs of Al Basrah. Our objective is to eliminate all hostiles and protect the FOB.</Text>
-
-                  <Section title="VICTORY CONDITIONS">
-                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
-                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
-                  </Section>
-
-                  <Section title="INFANTRY ASSETS">
-                    <Text style={styles.sectionNote}>- M4</Text>
-                    <Text style={styles.sectionNote}>- M249 SAW</Text>
-                    <Text style={styles.sectionNote}>- M203</Text>
-                    <Text style={styles.sectionNote}>- M72 LAW</Text>
-                  </Section>
-
-                  <Section title="SUPPORT ASSETS">
-                    <Text style={styles.sectionNote}>- HMMWV</Text>
-                    <Text style={styles.sectionNote}>- Logistic Truck</Text>
-                  </Section>
-
-                  <Section title="LOGISTIC ASSETS">
-                    <Text style={styles.sectionNote}>- COP</Text>
-                    <Text style={styles.sectionNote}>- Possible heavy weapons</Text>
-                  </Section>
-
-                  <Section title="MOBILITY RESTRICTIONS">
-                    <Text style={styles.sectionNote}>- Vehicles must use bridges</Text>
-                  </Section>
-
-                  <Section title="BEFORE LIVE">
-                    <Text style={styles.sectionNote}>- Decide on COP location</Text>
-                  </Section>
-
-                  <Section title="SPECIALTY RULES">
-                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
-                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
-                  </Section>
-
-                  <Section title="INTEL">
-                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
-                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
-                  </Section>
-                </View>
-
-                <View style={{ width }}>
-                  <InfoBar session1="15:30" session2="20:30" location="AL BASRAH" />
-
-                  <Text style={styles.description}>US command has identified an insurgent stronghold within a village, just a few kilometers from our forward operating base in the suburbs of Al Basrah. Our objective is to eliminate all hostiles and protect the FOB.</Text>
-
-                  <Section title="VICTORY CONDITIONS">
-                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
-                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
-                  </Section>
-
-                  <Section title="INFANTRY ASSETS">
-                    <Text style={styles.sectionNote}>- M4</Text>
-                    <Text style={styles.sectionNote}>- M249 SAW</Text>
-                    <Text style={styles.sectionNote}>- M203</Text>
-                    <Text style={styles.sectionNote}>- M72 LAW</Text>
-                  </Section>
-
-                  <Section title="SUPPORT ASSETS">
-                    <Text style={styles.sectionNote}>- HMMWV</Text>
-                    <Text style={styles.sectionNote}>- Logistic Truck</Text>
-                  </Section>
-
-                  <Section title="LOGISTIC ASSETS">
-                    <Text style={styles.sectionNote}>- COP</Text>
-                    <Text style={styles.sectionNote}>- Possible heavy weapons</Text>
-                  </Section>
-
-                  <Section title="MOBILITY RESTRICTIONS">
-                    <Text style={styles.sectionNote}>- Vehicles must use bridges</Text>
-                  </Section>
-
-                  <Section title="BEFORE LIVE">
-                    <Text style={styles.sectionNote}>- Decide on COP location</Text>
-                  </Section>
-
-                  <Section title="SPECIALTY RULES">
-                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
-                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
-                  </Section>
-
-                  <Section title="INTEL">
-                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
-                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
-                  </Section>
-                </View>
-                <View style={{ width }}>
-                  <InfoBar session1="15:30" session2="20:30" location="AL BASRAH" />
-
-                  <Text style={styles.description}>US command has identified an insurgent stronghold within a village, just a few kilometers from our forward operating base in the suburbs of Al Basrah. Our objective is to eliminate all hostiles and protect the FOB.</Text>
-
-                  <Section title="VICTORY CONDITIONS">
-                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
-                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
-                  </Section>
-
-                  <Section title="INFANTRY ASSETS">
-                    <Text style={styles.sectionNote}>- M4</Text>
-                    <Text style={styles.sectionNote}>- M249 SAW</Text>
-                    <Text style={styles.sectionNote}>- M203</Text>
-                    <Text style={styles.sectionNote}>- M72 LAW</Text>
-                  </Section>
-
-                  <Section title="SUPPORT ASSETS">
-                    <Text style={styles.sectionNote}>- HMMWV</Text>
-                    <Text style={styles.sectionNote}>- Logistic Truck</Text>
-                  </Section>
-
-                  <Section title="LOGISTIC ASSETS">
-                    <Text style={styles.sectionNote}>- COP</Text>
-                    <Text style={styles.sectionNote}>- Possible heavy weapons</Text>
-                  </Section>
-
-                  <Section title="MOBILITY RESTRICTIONS">
-                    <Text style={styles.sectionNote}>- Vehicles must use bridges</Text>
-                  </Section>
-
-                  <Section title="BEFORE LIVE">
-                    <Text style={styles.sectionNote}>- Decide on COP location</Text>
-                  </Section>
-
-                  <Section title="SPECIALTY RULES">
-                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
-                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
-                  </Section>
-
-                  <Section title="INTEL">
-                    <Text style={styles.sectionNote}>- Destory insurgent FOB</Text>
-                    <Text style={styles.sectionNote}>- Eliminate all insurgent forces in the area</Text>
-                  </Section>
-                </View>
+                <Roster roster={roster} />
+                <Roster roster={roster} />
 
               </ScrollView>
 
@@ -278,6 +149,16 @@ class Training extends Component {
 }
 
 const styles = {
+  rosterSectionTitle: {
+    fontFamily: 'rubik',
+    marginRight: 10,
+    marginLeft: 10,
+    alignSelf: 'center',
+    fontSize: 11,
+    color: '#252525',
+    letterSpacing: 0.8,
+    opacity: 0.55
+  },
   sectionNote: {
     fontFamily: 'open-sans',
     fontSize: 14,
@@ -306,6 +187,19 @@ const styles = {
     shadowOpacity: 0.4,
     shadowRadius: 15,
     elevation: 1,
+  },
+  tabContainer: {
+    flexDirection: 'row',
+    height: 48,
+  },
+  tab: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 4,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 4,
   },
 };
 
