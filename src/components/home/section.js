@@ -54,6 +54,7 @@ const Section = ({ title, sectionType, sectionPosition, data, navigate, snapToIn
         showsHorizontalScrollIndicator={false}
         snapToInterval={snapToInterval || cardWidth}
         decelerationRate={'fast'}
+        pagingEnabled={false}
         horizontal
         data={data}
         renderItem={({ item }) => renderItem(sectionType, item, navigate)}
